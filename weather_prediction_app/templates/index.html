@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="text-center">Selamat Datang di Aplikasi Prediksi Cuaca</h2>
+<div class="text-center">
+    <a href="{{ url_for('input_data') }}" class="btn btn-primary">Input Data</a>
+</div>
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="alert alert-success mt-3">{{ messages[0] }}</div>
+    {% endif %}
+{% endwith %}
+
+<h4 class="mt-4">Data Prediksi Cuaca Terbaru:</h4>
+{% if predictions %}
+    <div class="row">
+        {% for prediction in predictions %}
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Lokasi: {{ prediction.location }}</h5>
+                        <p>Tanggal: {{ prediction.date }}</p>
+                        <p>Waktu: {{ prediction.time }}</p>
+                        <p>Suhu: {{ prediction.temperature }} °C</p>
+                        <p>Tekanan: {{ prediction.pressure }} hPa</p>
+                        <p>Kelembapan: {{ prediction.humidity }} %</p>
+                        <p>Kecepatan Angin: {{ prediction.wind_speed }} km/h</p>
+                        <p>Arah Angin: {{ prediction.wind_direction }}</p>
+                        <p>Jenis Cuaca: {{ prediction.weather_type }}</p>
+                        <a href="{{ url_for('result', location=prediction.location, date=prediction.date, time=prediction.time,
+                        temperature=prediction.temperature, pressure=prediction.pressure,
+                        humidity=prediction.humidity, wind_speed=prediction.wind_speed,
+                        wind_direction=prediction.wind_direction) }}"
+       class="btn btn-secondary">Lihat Detail</a>
+    
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>Belum ada prediksi cuaca yang tersedia.</p>
+{% endif %}
+{% endblock %}

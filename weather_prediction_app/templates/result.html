@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2 class="text-center">Hasil Prediksi Cuaca</h2>
+    
+    {% if predictions %}
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Lokasi: {{ predictions[-1].location }}</h5>
+                <p class="card-text">Tanggal: {{ current_date }}</p>
+                <p class="card-text">Waktu: {{ current_time }}</p>
+                <p class="card-text">Suhu: {{ predictions[-1].temperature }} °C</p>
+                <p class="card-text">Tekanan: {{ predictions[-1].pressure }} hPa</p>
+                <p class="card-text">Kelembapan: {{ predictions[-1].humidity }} %</p>
+                <p class="card-text">Kecepatan Angin: {{ predictions[-1].wind_speed }} km/jam dari {{ predictions[-1].wind_direction }}</p>
+                <p class="card-text">Jenis Cuaca: {{ predictions[-1].weather_type }}</p>
+                <p class="card-text">Curah Hujan: {{ predictions[-1].rainfall }}</p>
+                <p class="card-text">Evaporasi: {{ predictions[-1].evaporation }}</p>
+                <p class="card-text">Sinar Matahari: {{ predictions[-1].sunshine }}</p>
+            </div>
+        </div>
+    {% else %}
+        <p>Tidak ada prediksi cuaca yang tersedia.</p>
+    {% endif %}
+
+    <h4 class="mt-4">Prediksi Cuaca Per Jam:</h4>
+    <div style="max-height: 400px; overflow-y: scroll;">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Jam</th>
+                    <th>Cuaca</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for prediction in hourly_predictions %}
+                    <tr>
+                        <td>{{ prediction.time }}</td>
+                        <td>{{ prediction.weather }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <a href="{{ url_for('index') }}" class="btn btn-primary mt-3">Kembali ke Home</a>
+{% endblock %}
